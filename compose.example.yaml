@@ -1,0 +1,24 @@
+name: backup-normalizer
+
+services:
+  backup-normalizer:
+    image: ghcr.io/fopwoc/backup-normalizer:latest
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      LOG_LEVEL: info
+      TZ: Europe/Moscow
+    command:
+      - --path=/backups
+      - --keep-all-for=12h
+      - --keep-daily-for=14d
+      - --keep-weekly-for=12w
+      - --keep-monthly-for=12mo
+      - --scan-every=1h
+      - --min-age=2h
+      - --apply
+    volumes:
+      - ./backups:/backups
+    read_only: true
+    security_opt:
+      - no-new-privileges:true

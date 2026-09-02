@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**/*.md"
+      - COPYRIGHT
+      - LICENSE
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - "**/*.md"
+      - COPYRIGHT
+      - LICENSE
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install stable Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy
+          rustup default stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Check project
+        run: make
+      - uses: actions/upload-artifact@v7
+        with:
+          name: backup-normalizer-linux-x86_64-ci
+          path: target/release/backup-normalizer
+          if-no-files-found: error
+          retention-days: 3
+
