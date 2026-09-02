@@ -1,5 +1,7 @@
 # Backup Normalizer
 
+[![CI](https://github.com/fopwoc/backup-normalizer/actions/workflows/ci.yml/badge.svg)](https://github.com/fopwoc/backup-normalizer/actions/workflows/ci.yml)
+
 Backup Normalizer thins a flat directory of timestamped backup files into progressively coarser history. It keeps every recent backup, then one per local calendar day, ISO week, and calendar month.
 
 Files that do not exactly match the configured timestamp format are ignored. The newest matching backup is always retained, and a redundant file must have unchanged metadata across two scans before it can be deleted.
